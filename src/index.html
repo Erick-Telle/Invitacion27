@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Mis XV Años – Alba Guissell Díaz Reyes</title>
+  <meta name="description" content="Invitación a celebrar los XV Años de Alba Guissell"/>
+  <meta name="theme-color" content="#050d1a"/>
+
+  <!-- Fuentes Google: Pinyon Script (Alta Elegancia), Alex Brush, Cinzel & Cinzel Decorative, Cormorant Garamond, Great Vibes, Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/sections.css"/>
+  <link rel="stylesheet" href="/css/components.css"/>
+  <link rel="stylesheet" href="/css/cover.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     FONDO ESTÁTICO FIJO (Fondo 1)
+     ══════════════════════════════════════════════════════════ -->
+<div class="fixed-bg" aria-hidden="true">
+  <img src="/imagenes/items/Fondo%201.jfif" alt="" class="fixed-bg-img"/>
+  <div class="fixed-bg-overlay"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CANVAS: PARTÍCULAS MÁGICAS (luciérnagas, destellos dorados)
+     ══════════════════════════════════════════════════════════ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ══════════════════════════════════════════════════════════
+     REPRODUCTOR DE AUDIO FLOTANTE
+     ══════════════════════════════════════════════════════════ -->
+<div class="audio-widget" id="audio-widget">
+  <div class="audio-tooltip" id="audio-tooltip">♪ Música de gala</div>
+  <button class="audio-btn" id="audio-toggle-btn" aria-label="Reproducir música">
+    <div class="audio-eq">
+      <span class="eq-bar"></span><span class="eq-bar"></span>
+      <span class="eq-bar"></span><span class="eq-bar"></span>
+    </div>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PORTADA INTERACTIVA DEL LIBRO MÁGICO (COVER SCREEN)
+     ══════════════════════════════════════════════════════════ -->
+<div id="cover-screen" class="cover-screen">
+  <!-- Fondo ambiental y estrellas de gala -->
+  <div class="cover-backdrop">
+    <div class="cover-backdrop-glow"></div>
+    <div class="cover-stars"></div>
+    <div class="cover-ambient-light"></div>
+  </div>
+
+  <!-- Cabecera de la portada -->
+  <header class="cover-header" id="cover-header">
+    <p class="cover-pretitle">Nuestra historia comienza aquí</p>
+    <h1 class="cover-title">Mis XV Años</h1>
+    <p class="cover-name">Alba Guissell</p>
+    <div class="cover-guest-badge" id="cover-guest-badge" style="display:none;">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/>
+      </svg>
+      <span class="guest-badge-text" id="guest-badge-text"></span>
+    </div>
+  </header>
+
+  <!-- Escenario central 3D con el Libro -->
+  <div class="cover-book-stage">
+    <div class="book-scene" id="book-scene" title="Toca para abrir la invitación">
+      <!-- Halo y sombra del libro -->
+      <div class="book-aura"></div>
+      <div class="book-shadow"></div>
+
+      <!-- Objeto tridimensional del libro -->
+      <div class="book-3d" id="book-3d">
+        <!-- Base / contratapa trasera -->
+        <div class="book-back"></div>
+
+        <!-- Canto lateral de hojas doradas -->
+        <div class="book-pages-block"></div>
+
+        <!-- Lomo encuadernado izquierdo -->
+        <div class="book-spine-side"></div>
+
+        <!-- Página interior con mensaje (visible al abrirse la tapa) -->
+        <div class="book-inside-page">
+          <div class="inside-frame-border"></div>
+          <div class="inside-ornament">✦</div>
+          <p class="inside-message">"Hay momentos que merecen ser eternos, y personas que los hacen inolvidables..."</p>
+          <p class="inside-signature">Alba Guissell</p>
+          <div class="book-light-burst" id="book-light-burst"></div>
+        </div>
+
+        <!-- Tapa frontal abatible con la imagen del libro correspondiente -->
+        <div class="book-front" id="book-front">
+          <img id="book-cover-img" src="/imagenes/items/Libro%201%20Persona.PNG" alt="Libro de Invitación XV Años" class="book-cover-img" loading="eager"/>
+          <div class="book-shimmer"></div>
+          <div class="book-bevel-border"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie con botón de apertura y validez -->
+  <footer class="cover-footer" id="cover-footer">
+    <button type="button" class="cover-open-btn" id="cover-open-btn" aria-label="Abrir invitación">
+      <span class="btn-sparkle">✦</span>
+      <span>Toca el libro para abrir</span>
+      <span class="btn-sparkle">✦</span>
+    </button>
+    <p class="cover-validity-tag" id="cover-validity-tag">Invitación Válida para 1 Persona</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     INVITACIÓN PRINCIPAL (OPTIMIZADA PARA TELÉFONOS CELULARES)
+     ══════════════════════════════════════════════════════════ -->
+<main id="invitation" class="invitation">
+
+  <!-- ── PANTALLA 1: HERO VISTA MÓVIL (100dvh) ── -->
+  <section class="screen-hero">
+
+    <!-- 1. ARRIBA: Mis XV AÑOS -->
+    <header class="hero-top reveal">
+      <p class="hero-prefix">Mis</p>
+      <h1 class="hero-xv">XV AÑOS</h1>
+    </header>
+
+    <!-- 2. CENTRO: FOTO Y MARCO DE LA QUINCEAÑERA -->
+    <div class="hero-frame-container reveal">
+      <div class="photo-frame-wrapper">
+        <img src="/imagenes/items/Foto%20y%20Marco.png" alt="Alba Guissell Díaz Reyes" class="hero-composite-img" loading="eager"/>
+      </div>
+    </div>
+
+    <!-- 3. ABAJO: EL NOMBRE DE LA QUINCEAÑERA -->
+    <footer class="hero-bottom reveal">
+      <h2 class="hero-name">Alba Guissell</h2>
+      <h3 class="hero-surname">Díaz Reyes</h3>
+      <div class="scroll-indicator">
+        <span>Desliza para ver más</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+    </footer>
+
+  </section>
+
+  <!-- ── PANEL DE REPRODUCCIÓN DE MÚSICA DE GALA ── -->
+  <section class="music-section reveal-fade">
+    <div class="music-player-card">
+
+      <!-- Ícono giratorio central con nota musical -->
+      <div class="music-vinyl-container" id="music-vinyl">
+        <div class="music-vinyl-disc">
+          <div class="music-vinyl-ring"></div>
+          <span class="music-note-icon">♪</span>
+        </div>
+      </div>
+
+      <!-- Info y controles -->
+      <div class="music-card-right">
+        <div class="music-track-info">
+          <p class="music-track-tag">Música de Gala</p>
+          <h3 class="music-track-title">Golden Hour (Violin Version)</h3>
+          <p class="music-track-artist">ViOLiNiA · Zhanna Stelmakh</p>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="music-progress-container" id="music-progress-bar">
+          <div class="music-progress-track">
+            <div class="music-progress-fill" id="music-progress-fill"></div>
+          </div>
+          <div class="music-time-display">
+            <span id="music-current-time">0:00</span>
+            <span id="music-total-time">--:--</span>
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="music-controls">
+          <button class="music-play-btn" id="panel-play-btn" aria-label="Reproducir música" type="button">
+            <svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <polygon points="8,5 19,12 8,19"/>
+            </svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none;">
+              <rect x="6" y="4" width="4" height="16" rx="1"/>
+              <rect x="14" y="4" width="4" height="16" rx="1"/>
+            </svg>
+          </button>
+
+          <!-- Ecualizador del panel -->
+          <div class="music-panel-eq" id="music-panel-eq">
+            <span class="panel-eq-bar"></span>
+            <span class="panel-eq-bar"></span>
+            <span class="panel-eq-bar"></span>
+            <span class="panel-eq-bar"></span>
+            <span class="panel-eq-bar"></span>
+          </div>
+
+          <button class="music-vol-btn" id="panel-vol-btn" aria-label="Silenciar" type="button">
+            <svg class="icon-vol-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <svg class="icon-vol-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 2: MARCO TEXTO CON LAS PALABRAS ── -->
+  <section class="screen-message reveal-zoom">
+    <div class="text-frame-wrapper">
+      <div class="text-frame-inner">
+        <span class="text-frame-quote-symbol">“</span>
+        <p class="text-frame-words">
+          Hay momentos en la vida que son inolvidables, y compartirlos con quienes más quiero los hace eternos. Con la bendición de Dios y el amor incondicional de mis padres, tengo la alegría de invitarte a celebrar mis quince años.
+        </p>
+
+        <div class="text-frame-divider">
+          <span></span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/>
+          </svg>
+          <span></span>
+        </div>
+
+        <div class="text-frame-parents">
+          <p class="parents-intro">Con la bendición de mis padres</p>
+          <p class="parent-name">Henry Díaz Gutiérrez</p>
+          <span class="parents-amp">✦</span>
+          <p class="parent-name">Alba Luz Reyes Castillo</p>
+        </div>
+      </div>
+      <img src="/imagenes/items/Marco%20Texto.png" alt="Marco de Texto Ornamental" class="text-frame-border" loading="lazy"/>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 3: TEMPORIZADOR DE CUENTA REGRESIVA ── -->
+  <section class="countdown-section reveal-left">
+    <div class="countdown-card">
+      <p class="countdown-tag">Cuenta Regresiva</p>
+      <h2 class="countdown-title">Faltan tan solo</h2>
+
+      <div class="gold-divider">
+        <span></span>
+        <svg viewBox="0 0 30 30" width="18" height="18" fill="currentColor">
+          <path d="M15 2 L17 13 L28 15 L17 17 L15 28 L13 17 L2 15 L13 13 Z"/>
+        </svg>
+        <span></span>
+      </div>
+
+      <p class="countdown-date">Viernes · 27 de Noviembre del 2026</p>
+
+      <div class="countdown-grid" id="countdown-timer">
+        <div class="countdown-box">
+          <span class="cd-num" id="cd-days">00</span>
+          <span class="cd-lbl">Días</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-box">
+          <span class="cd-num" id="cd-hours">00</span>
+          <span class="cd-lbl">Horas</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-box">
+          <span class="cd-num" id="cd-minutes">00</span>
+          <span class="cd-lbl">Min</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-box">
+          <span class="cd-num" id="cd-seconds">00</span>
+          <span class="cd-lbl">Seg</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 4: CARRUSEL AUTOMÁTICO DE FOTOS (FOTO 2, 3 Y 4) ── -->
+  <section class="carousel-section reveal-zoom">
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <!-- Slide 1: Foto 2 -->
+        <div class="carousel-slide active">
+          <img src="/imagenes/15%20aniera/Foto%202.jpeg" alt="Alba Guissell - Foto 2" class="carousel-img" loading="lazy"/>
+          <div class="carousel-slide-overlay"></div>
+        </div>
+        <!-- Slide 2: Foto 3 -->
+        <div class="carousel-slide">
+          <img src="/imagenes/15%20aniera/Foto%203.jpeg" alt="Alba Guissell - Foto 3" class="carousel-img" loading="lazy"/>
+          <div class="carousel-slide-overlay"></div>
+        </div>
+        <!-- Slide 3: Foto 5 -->
+        <div class="carousel-slide">
+          <img src="/imagenes/15%20aniera/Foto%205.jpeg" alt="Alba Guissell - Foto 5" class="carousel-img" loading="lazy"/>
+          <div class="carousel-slide-overlay"></div>
+        </div>
+      </div>
+
+      <div class="carousel-dots"></div>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 5: CALENDARIO Y UBICACIÓN (SOBRE FONDO 2) ── -->
+  <section class="venue-section reveal-fade">
+    <!-- Fondo 2 estático de la sección -->
+    <div class="venue-bg">
+      <img src="/imagenes/items/Fondo%202.png" alt="Fondo" class="venue-bg-img" loading="lazy"/>
+      <div class="venue-bg-overlay"></div>
+    </div>
+
+    <!-- 1. Imagen de Calendario (de borde a borde de la pantalla) -->
+    <div class="calendar-banner">
+      <img src="/imagenes/items/Calendario.png" alt="Calendario 27 de Noviembre" class="calendar-img" loading="lazy"/>
+    </div>
+
+    <!-- 2. Cuadro con hora, lugar y botón más grande encima de Fondo 2 -->
+    <div class="venue-card-wrapper">
+      <div class="venue-card">
+        <div class="venue-events">
+
+          <!-- Ceremonia Religiosa -->
+          <div class="venue-event">
+            <div class="venue-event-header">
+              <div class="venue-icon-box" aria-hidden="true">
+                <!-- Icono de Iglesia -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v3M10.5 3.5h3"/>
+                  <path d="M12 5L6 9.5V21h12V9.5L12 5z"/>
+                  <path d="M10 21v-4a2 2 0 0 1 4 0v4"/>
+                  <circle cx="12" cy="11.5" r="1.5"/>
+                </svg>
+              </div>
+              <div class="venue-event-info">
+                <span class="venue-event-time">6:00 PM</span>
+                <span class="venue-event-type">Ceremonia Religiosa</span>
+                <span class="venue-event-place">Iglesia Altamira</span>
+              </div>
+            </div>
+            <a href="https://maps.google.com/?q=Iglesia+Altamira,+Managua,+Nicaragua" target="_blank" rel="noopener noreferrer" class="venue-map-btn" aria-label="Ver Iglesia Altamira en Google Maps">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>Ver en Google Maps</span>
+            </a>
+          </div>
+
+          <div class="venue-events-divider"></div>
+
+          <!-- Recepción & Fiesta -->
+          <div class="venue-event">
+            <div class="venue-event-header">
+              <div class="venue-icon-box" aria-hidden="true">
+                <!-- Icono de Recepción / Brindis y Fiesta -->
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3l2 6a2.5 2.5 0 0 0 2.5 2h.5a2.5 2.5 0 0 0 2.5-2L11 3H6z"/>
+                  <path d="M9 11v7M6.5 18h5"/>
+                  <path d="M18 3l-2 6a2.5 2.5 0 0 1-2.5 2h-.5a2.5 2.5 0 0 1-2.5-2L13 3h5z"/>
+                  <path d="M15 11v7M12.5 18h5"/>
+                  <path d="M12 2v2M12 6v1"/>
+                </svg>
+              </div>
+              <div class="venue-event-info">
+                <span class="venue-event-time">8:00 PM</span>
+                <span class="venue-event-type">Recepción &amp; Fiesta</span>
+                <span class="venue-event-place">Altamira Eventos</span>
+              </div>
+            </div>
+            <a href="https://maps.google.com/?q=Altamira+Eventos,+Managua,+Nicaragua" target="_blank" rel="noopener noreferrer" class="venue-map-btn" aria-label="Ver Altamira Eventos en Google Maps">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>Ver en Google Maps</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 6: CÓDIGO DE VESTIMENTA ── -->
+  <section class="dresscode-section reveal-right">
+    <div class="dresscode-frame-wrapper">
+      <img src="/imagenes/items/Codigo%20de%20Vestimenta.png" alt="Código de Vestimenta" class="dresscode-img" loading="lazy"/>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 7: OBSEQUIOS / LLUVIA DE SOBRES ── -->
+  <section class="gifts-section reveal-zoom">
+    <div class="gifts-frame-wrapper">
+      <img src="/imagenes/items/Marco%20dorado.png" alt="Marco Dorado Obsequios" class="gifts-frame-border" loading="lazy"/>
+      <div class="gifts-frame-inner">
+        <h2 class="gifts-title">Obsequios</h2>
+
+        <div class="gifts-icons-row" aria-hidden="true">
+          <div class="gifts-icon-circle" title="Regalo">
+            <svg class="gifts-icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 12 20 22 4 22 4 12"></polyline>
+              <rect x="2" y="7" width="20" height="5" rx="1"></rect>
+              <line x1="12" y1="22" x2="12" y2="7"></line>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+            </svg>
+          </div>
+          <span class="gifts-icons-sparkle">✦</span>
+          <div class="gifts-icon-circle" title="Carta">
+            <svg class="gifts-icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <p class="gifts-subtitle">Lluvia de sobres</p>
+
+        <div class="gifts-divider" aria-hidden="true">
+          <span></span>
+          <svg viewBox="0 0 30 30" width="14" height="14" fill="currentColor">
+            <path d="M15 2 L17 13 L28 15 L17 17 L15 28 L13 17 L2 15 L13 13 Z"/>
+          </svg>
+          <span></span>
+        </div>
+
+        <p class="gifts-paragraph">
+          Tu presencia en esta noche tan especial es el regalo más valioso que puedo recibir, pues compartir contigo la alegría de mis XV años hará que este momento sea aún más inolvidable.
+        </p>
+
+        <p class="gifts-paragraph">
+          Si deseas tener un detalle conmigo, agradeceré de corazón que sea mediante una <span class="gifts-highlight">lluvia de sobres</span>, como una hermosa muestra de cariño y buenos deseos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PANTALLA 8: CONFIRMACIÓN DE ASISTENCIA (RSVP) ── -->
+  <section class="rsvp-section reveal-left" id="confirmacion">
+    <div class="rsvp-card">
+      <div class="rsvp-card-header">
+        <div class="rsvp-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <p class="rsvp-tag">Acompáñanos en este día</p>
+        <h2 class="rsvp-title">Confirmar Asistencia</h2>
+        <div class="gold-divider">
+          <span></span>
+          <svg viewBox="0 0 30 30" width="16" height="16" fill="currentColor">
+            <path d="M15 2 L17 13 L28 15 L17 17 L15 28 L13 17 L2 15 L13 13 Z"/>
+          </svg>
+          <span></span>
+        </div>
+        <p class="rsvp-subtitle">Tu presencia hará que esta noche sea mágica e inolvidable</p>
+      </div>
+
+      <form id="rsvp-form" class="rsvp-form">
+        <!-- Nombre completo -->
+        <div class="rsvp-form-group">
+          <label for="rsvp-name" class="rsvp-form-label">Nombre y Apellido</label>
+          <input type="text" id="rsvp-name" name="name" class="rsvp-form-input" placeholder="Ingresa tu nombre completo" required />
+        </div>
+
+        <!-- ¿Asistirás? -->
+        <div class="rsvp-form-group">
+          <label class="rsvp-form-label">¿Podrás asistir?</label>
+          <div class="rsvp-radio-group">
+            <label class="rsvp-radio-card">
+              <input type="radio" name="attending" value="true" checked />
+              <span class="rsvp-radio-pill">¡Sí, con gusto asistiré!</span>
+            </label>
+            <label class="rsvp-radio-card">
+              <input type="radio" name="attending" value="false" />
+              <span class="rsvp-radio-pill">No podré asistir</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Pases / Acompañantes adicionales -->
+        <div class="rsvp-form-group" id="guests-group">
+          <label for="rsvp-guests" class="rsvp-form-label">Pases / Acompañantes</label>
+          <select id="rsvp-guests" name="guests" class="rsvp-form-select">
+            <option value="0">Solo yo (1 persona)</option>
+            <option value="1">+1 Acompañante (2 personas)</option>
+            <option value="2">+2 Acompañantes (3 personas)</option>
+            <option value="3">+3 Acompañantes (4 personas)</option>
+            <option value="5">+5 Acompañantes (6 personas)</option>
+          </select>
+        </div>
+
+        <!-- Mensaje o felicitación -->
+        <div class="rsvp-form-group">
+          <label for="rsvp-comments" class="rsvp-form-label">Mensaje para la Quinceañera (Opcional)</label>
+          <textarea id="rsvp-comments" name="comments" class="rsvp-form-textarea" rows="3" placeholder="Escribe tus buenos deseos o felicitaciones..."></textarea>
+        </div>
+
+        <!-- Botón Enviar -->
+        <button type="submit" class="rsvp-submit-btn" id="rsvp-submit-btn">
+          <span>Enviar Confirmación</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <div id="rsvp-message" class="rsvp-status-message"></div>
+      </form>
+    </div>
+  </section>
+  <!-- ── PANTALLA 9: AGRADECIMIENTO FINAL ── -->
+  <section class="thanks-section">
+
+    <!-- Destellos decorativos -->
+    <div class="thanks-sparkles" aria-hidden="true">
+      <span class="ts ts1">✦</span>
+      <span class="ts ts2">✦</span>
+      <span class="ts ts3">✦</span>
+      <span class="ts ts4">✦</span>
+      <span class="ts ts5">✦</span>
+    </div>
+
+    <!-- Separador superior -->
+    <div class="thanks-top-divider reveal-fade">
+      <span></span>
+      <svg viewBox="0 0 30 30" width="20" height="20" fill="currentColor">
+        <path d="M15 2 L17 13 L28 15 L17 17 L15 28 L13 17 L2 15 L13 13 Z"/>
+      </svg>
+      <span></span>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="thanks-content">
+
+      <!-- Símbolo de flor decorativa -->
+      <div class="thanks-icon reveal-zoom delay-1" aria-hidden="true">
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none">
+          <circle cx="30" cy="30" r="6" fill="currentColor" opacity="0.9"/>
+          <!-- Pétalos -->
+          <ellipse cx="30" cy="14" rx="4" ry="8" fill="currentColor" opacity="0.55"/>
+          <ellipse cx="30" cy="46" rx="4" ry="8" fill="currentColor" opacity="0.55"/>
+          <ellipse cx="14" cy="30" rx="8" ry="4" fill="currentColor" opacity="0.55"/>
+          <ellipse cx="46" cy="30" rx="8" ry="4" fill="currentColor" opacity="0.55"/>
+          <ellipse cx="19.4" cy="19.4" rx="4" ry="8" transform="rotate(-45 19.4 19.4)" fill="currentColor" opacity="0.4"/>
+          <ellipse cx="40.6" cy="40.6" rx="4" ry="8" transform="rotate(-45 40.6 40.6)" fill="currentColor" opacity="0.4"/>
+          <ellipse cx="40.6" cy="19.4" rx="4" ry="8" transform="rotate(45 40.6 19.4)" fill="currentColor" opacity="0.4"/>
+          <ellipse cx="19.4" cy="40.6" rx="4" ry="8" transform="rotate(45 19.4 40.6)" fill="currentColor" opacity="0.4"/>
+        </svg>
+      </div>
+
+      <!-- Etiqueta superior -->
+      <p class="thanks-tag reveal-fade delay-1">Con todo mi amor</p>
+
+      <!-- Título principal -->
+      <h2 class="thanks-title reveal delay-2">¡Gracias por acompañarme!</h2>
+
+      <!-- Nombre de la quinceañera -->
+      <p class="thanks-name reveal-rotate delay-2">Alba Guissell</p>
+
+      <!-- Divisor -->
+      <div class="thanks-divider reveal-fade delay-2" aria-hidden="true">
+        <span></span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+          <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/>
+        </svg>
+        <span></span>
+      </div>
+
+      <!-- Texto de agradecimiento -->
+      <p class="thanks-message reveal delay-3">
+        Cada momento compartido contigo vale más que mil palabras. Tu presencia iluminará esta noche mágica y la guardará para siempre en mi corazón. ¡Gracias por ser parte de mi historia!
+      </p>
+
+      <!-- Frase cierre -->
+      <p class="thanks-quote reveal-fade delay-4">
+        "Que la alegría de esta noche brille en tu camino siempre."
+      </p>
+
+      <!-- Firma -->
+      <p class="thanks-signature reveal-zoom delay-4">— Alba Guissell Díaz Reyes —</p>
+
+      <!-- Corazón animado -->
+      <div class="thanks-heart reveal-fade delay-4" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+
+      <!-- Retrato final de la Quinceañera (Foto 6) -->
+      <div class="thanks-final-photo-wrapper reveal-zoom delay-4">
+        <div class="thanks-final-photo-card">
+          <img src="/imagenes/15%20aniera/Foto%206.jpeg" alt="Alba Guissell Díaz Reyes - Mis XV Años" class="thanks-final-photo-img" loading="lazy" />
+          <div class="thanks-final-photo-border"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Separador inferior decorativo -->
+    <div class="thanks-bottom-bar reveal-fade delay-4" aria-hidden="true">
+      <span>✦</span>
+      <span>✦</span>
+      <span>✦</span>
+    </div>
+
+  </section>
+
+</main>
+
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+/* src/css/book.css */
+/* Libro de Invitación — Jardín Encantado Nocturno: Terciopelo Esmeralda & Pan de Oro */
+
+.cover-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  perspective: 1800px;
+  /* Fondo: jardín nocturno misterioso con bruma */
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(10, 62, 42, 0.25) 0%, transparent 55%),
+    radial-gradient(circle at 50% 80%, rgba(58, 8, 40, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, #060d1f 0%, #040a16 50%, #020510 100%);
+  overflow: hidden;
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.4s;
+}
+
+.cover-container.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ═══ Frase poética arriba del libro ═══ */
+.cover-poetic-phrase {
+  position: absolute;
+  top: clamp(30px, 6vh, 80px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 340px;
+  z-index: 5;
+  padding: 0 1rem;
+}
+
+.cover-poetic-phrase p {
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  line-height: 1.7;
+  color: rgba(244, 227, 183, 0.9);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.5px;
+}
+
+/* ═══ Etiqueta de invitado (tag colgante) ═══ */
+.guest-tag {
+  position: absolute;
+  bottom: clamp(50px, 10vh, 100px);
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  z-index: 6;
+}
+
+.guest-tag-inner {
+  background: linear-gradient(145deg, #fdf0f5 0%, #f5dce6 50%, #e8c8d6 100%);
+  border-radius: 12px 12px 12px 0;
+  padding: 14px 22px 12px 22px;
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  position: relative;
+  min-width: 140px;
+  text-align: center;
+}
+
+.guest-tag-inner::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #d4af37, #a37c18);
+  border-radius: 50%;
+  border: 1.5px solid #fff8db;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.guest-tag-name {
+  font-family: var(--font-cursive);
+  font-size: 1.35rem;
+  color: #3a2a22;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.guest-tag-count {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: #6a5a52;
+  text-transform: lowercase;
+  background: rgba(212, 175, 55, 0.15);
+  padding: 3px 12px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.guest-tag-string {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.6));
+}
+
+/* ═══ ESCENARIO Y CONTENEDOR 3D DEL LIBRO ═══ */
+.book-scene {
+  position: relative;
+  width: 260px;
+  height: 380px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 3;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 390px) {
+  .book-scene {
+    width: 290px;
+    height: 420px;
+  }
+}
+
+@media (min-width: 480px) {
+  .book-scene {
+    width: 320px;
+    height: 460px;
+  }
+}
+
+.book-scene:hover {
+  transform: translateY(-8px) rotateX(3deg) rotateY(-4deg);
+}
+
+/* Sombra ambiental */
+.book-shadow {
+  position: absolute;
+  bottom: -35px;
+  left: 5%;
+  width: 90%;
+  height: 35px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 72%);
+  filter: blur(12px);
+  transform: rotateX(85deg);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+/* Estructura 3D */
+.book-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ═══ CONTRATAPA ═══ */
+.book-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--emerald-velvet);
+  border-radius: 4px 14px 14px 4px;
+  box-shadow:
+    -12px 18px 45px rgba(0, 0, 0, 0.95),
+    inset -3px 0 8px rgba(0, 0, 0, 0.8);
+  transform: translateZ(-28px);
+}
+
+/* ═══ CANTO DE PÁGINAS DORADAS ═══ */
+.book-pages-block {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  width: calc(100% - 18px);
+  height: calc(100% - 20px);
+  background: repeating-linear-gradient(
+    90deg,
+    #9c761e 0px,
+    #e9ce87 1px,
+    #7a5910 2px,
+    #e9ce87 3px,
+    #9c761e 4px
+  );
+  border-radius: 0 10px 10px 0;
+  transform: translateZ(-14px);
+  box-shadow:
+    inset 4px 0 12px rgba(0, 0, 0, 0.7),
+    8px 0 18px rgba(0, 0, 0, 0.85);
+}
+
+/* Resplandor interior mágico */
+.book-inner-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 235, 170, 0.95) 0%,
+    rgba(212, 175, 55, 0.5) 40%,
+    rgba(20, 128, 94, 0.2) 65%,
+    transparent 80%);
+  opacity: 0;
+  border-radius: 6px;
+  pointer-events: none;
+  transform: translateZ(-6px);
+  transition: opacity 0.5s ease;
+}
+
+/* ═══ CINTA MARCAPÁGINAS DE SEDA ═══ */
+.book-ribbon {
+  position: absolute;
+  bottom: -28px;
+  right: 55px;
+  width: 22px;
+  height: 48px;
+  background: linear-gradient(180deg, #8b1a5a 0%, #5a0838 70%, #3a0828 100%);
+  border-left: 1px solid rgba(212, 175, 55, 0.4);
+  border-right: 1px solid rgba(212, 175, 55, 0.4);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  transform: translateZ(-10px) rotate(4deg);
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* ═══ LOMO ARTESANAL ═══ */
+.book-spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 100%;
+  background: linear-gradient(90deg, #020a08 0%, #063d2a 40%, #031a12 100%);
+  border-radius: 6px 0 0 6px;
+  box-shadow:
+    inset 2px 0 6px rgba(212, 175, 55, 0.25),
+    inset -2px 0 6px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 25px 0;
+}
+
+.spine-band {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(180deg, #0a5e42 0%, #031a12 100%);
+  border-top: 1px solid rgba(212, 175, 55, 0.45);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.spine-ornament {
+  width: 15px;
+  height: 15px;
+  fill: var(--gold-primary);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+  opacity: 0.85;
+}
+
+/* ═══ TAPA FRONTAL — Terciopelo Esmeralda & Pan de Oro ═══ */
+.book-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #041a12;
+  background-image:
+    /* Micro-textura de terciopelo */
+    radial-gradient(circle, rgba(10, 94, 66, 0.3) 1px, transparent 1px),
+    /* Iluminación de terciopelo esmeralda */
+    var(--emerald-velvet);
+  background-size: 11px 11px, 100% 100%;
+  border-radius: 4px 14px 14px 4px;
+  box-shadow:
+    inset 0 0 0 1px rgba(212, 175, 55, 0.35),
+    inset 8px 0 20px rgba(0, 0, 0, 0.9),
+    10px 15px 40px rgba(0, 0, 0, 0.9);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 26px 22px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  backface-visibility: hidden;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ráfaga de destello pan de oro */
+.gold-shimmer-sweep {
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 235, 175, 0.12) 48%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 235, 175, 0.12) 52%,
+    transparent 58%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  animation: shimmerSweep 7s infinite ease-in-out;
+  z-index: 10;
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateY(-100%) rotate(25deg); opacity: 0; }
+  15% { opacity: 1; }
+  40% { transform: translateY(100%) rotate(25deg); opacity: 0; }
+  100% { transform: translateY(100%) rotate(25deg); opacity: 0; }
+}
+
+/* Marco exterior doble con bajorrelieve */
+.cover-gold-frame {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 16px;
+  bottom: 14px;
+  border: 1.5px solid var(--gold-primary);
+  border-radius: 4px;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 1px 1px rgba(255, 240, 180, 0.3))
+    drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.9));
+}
+
+.cover-gold-frame::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 0.8px dashed rgba(247, 225, 155, 0.35);
+  border-radius: 3px;
+}
+
+/* Esquinas barrocas doradas */
+.baroque-corner {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 1px 1px rgba(255, 240, 180, 0.35))
+    drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.9));
+}
+
+.baroque-corner.top-left     { top: -2px;    left: -2px; }
+.baroque-corner.top-right    { top: -2px;    right: -2px;  transform: scaleX(-1); }
+.baroque-corner.bottom-left  { bottom: -2px; left: -2px;   transform: scaleY(-1); }
+.baroque-corner.bottom-right { bottom: -2px; right: -2px;  transform: scale(-1); }
+
+/* ═══ COMPOSICIÓN TIPOGRÁFICA DE GALA ═══ */
+.cover-center-content {
+  text-align: center;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+}
+
+/* Nombre en cursiva elegante */
+.cover-name-script {
+  font-family: var(--font-cursive);
+  font-size: clamp(2.6rem, 7vw, 3.8rem);
+  line-height: 1;
+  color: #fff4d1;
+  background: linear-gradient(180deg, #ffffff 0%, #fbe8af 45%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.95));
+  margin-bottom: 0.3rem;
+}
+
+/* "XV AÑOS" con tipografía mayúscula */
+.cover-title-main {
+  font-family: var(--font-serif-decorative);
+  font-size: clamp(1.3rem, 4vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 5px;
+  background: var(--gold-foil-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 12px rgba(212, 175, 55, 0.25));
+  text-transform: uppercase;
+}
+
+/* Florón/Arabesco de joya */
+.cover-jewel-ornament {
+  width: 90px;
+  height: 22px;
+  margin: 0.5rem 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+}
+
+.cover-tagline {
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  letter-spacing: 2.5px;
+  color: var(--gold-light);
+  opacity: 0.88;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+}
+
+/* Botón "Abrir aquí" sutil */
+.cover-open-btn {
+  margin-top: 1rem;
+  padding: 6px 22px;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 20px;
+  background: rgba(212, 175, 55, 0.08);
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cover-open-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold-primary);
+}
+
+/* ═══ BROCHE DE ORFEBRERÍA CON GEMA ESMERALDA ═══ */
+.book-clasp {
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 62px;
+  background: linear-gradient(135deg, #fff2cb 0%, #e0bc51 40%, #a37c18 80%, #684a05 100%);
+  border-radius: 0 16px 16px 0;
+  box-shadow:
+    4px 6px 18px rgba(0, 0, 0, 0.9),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.8),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 2px solid #3d2a02;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5;
+  gap: 4px;
+}
+
+/* Gema esmeralda */
+.clasp-gem {
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle at 35% 35%, #6aefb2 0%, #14805e 60%, #063d2a 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(20, 128, 94, 0.7), inset 0 0 2px rgba(0, 0, 0, 0.8);
+  border: 1px solid #73540b;
+}
+
+.keyhole {
+  width: 9px;
+  height: 16px;
+  position: relative;
+}
+
+.keyhole::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 7px;
+  height: 7px;
+  background: #0a0501;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.keyhole::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 5px;
+  height: 10px;
+  background: #0a0501;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
+/* ═══ LLAVE MÁGICA DORADA ═══ */
+.golden-key {
+  position: absolute;
+  right: -58px;
+  top: calc(50% + 10px);
+  width: 68px;
+  height: 94px;
+  cursor: pointer;
+  z-index: 10;
+  filter:
+    drop-shadow(0 5px 16px rgba(212, 175, 55, 0.65))
+    drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+  animation: floatKey 3.2s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+@keyframes floatKey {
+  0%   { transform: translateY(0px) rotate(14deg); }
+  100% { transform: translateY(-14px) rotate(22deg); }
+}
+
+.key-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══ INDICADOR DE APERTURA ═══ */
+.open-instruction {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+  animation: pulseGlow 2.8s infinite ease-in-out;
+}
+
+.instruction-text {
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  color: var(--gold-light);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+.instruction-icon {
+  width: 22px;
+  height: 22px;
+  stroke: var(--gold-primary);
+  animation: bounceDown 1.8s infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7)); }
+}
